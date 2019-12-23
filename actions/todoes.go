@@ -48,7 +48,7 @@ func (v TodoesResource) List(c buffalo.Context) error {
   // Add the paginator to the context so it can be used in the template.
   c.Set("pagination", q.Paginator)
 
-  return c.Render(200, r.Auto(c, todoes))
+  return c.Render(200, r.JSON(todoes))
 }
 
 // Show gets the data for one Todo. This function is mapped to
@@ -68,7 +68,7 @@ func (v TodoesResource) Show(c buffalo.Context) error {
     return c.Error(404, err)
   }
 
-  return c.Render(200, r.Auto(c, todo))
+  return c.Render(200, r.JSON(todo))
 }
 
 // Create adds a Todo to the DB. This function is mapped to the
@@ -104,7 +104,7 @@ func (v TodoesResource) Create(c buffalo.Context) error {
   }
 
   // and redirect to the todoes index page
-  return c.Render(201, r.Auto(c, todo))
+  return c.Render(201, r.JSON(todo))
 }
 
 // Update changes a Todo in the DB. This function is mapped to
@@ -143,7 +143,7 @@ func (v TodoesResource) Update(c buffalo.Context) error {
   }
 
   // and redirect to the todoes index page
-  return c.Render(200, r.Auto(c, todo))
+  return c.Render(200, r.JSON(todo))
 }
 
 // Destroy deletes a Todo from the DB. This function is mapped
@@ -168,5 +168,5 @@ func (v TodoesResource) Destroy(c buffalo.Context) error {
   }
 
   // Redirect to the todoes index page
-  return c.Render(200, r.Auto(c, todo))
+  return c.Render(200, r.JSON(todo))
 }
