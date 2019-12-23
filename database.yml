@@ -1,7 +1,7 @@
 ---
 development:
   dialect: postgres
-  database: de_development
+  database: devNursery
   user: postgres
   password: database
   host: 127.0.0.1

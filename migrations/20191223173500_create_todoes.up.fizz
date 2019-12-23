@@ -1,0 +1,6 @@
+create_table("todoes") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("entry", "text", {null: true})
+	t.Column("complete", "bool", {})
+	t.Timestamps()
+}
