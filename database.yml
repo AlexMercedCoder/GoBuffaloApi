@@ -3,7 +3,7 @@ development:
   dialect: postgres
   database: de_development
   user: postgres
-  password: postgres
+  password: database
   host: 127.0.0.1
   pool: 5
 
