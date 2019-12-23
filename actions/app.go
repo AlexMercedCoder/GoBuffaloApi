@@ -13,6 +13,8 @@ import (
 	contenttype "github.com/gobuffalo/mw-contenttype"
 	"github.com/gobuffalo/x/sessions"
 	"github.com/rs/cors"
+	"fmt"
+	"github.com/gobuffalo/pop"
 )
 
 // ENV is used to help switch settings based on where the
@@ -60,6 +62,7 @@ func App() *buffalo.App {
 
 		app.GET("/", HomeHandler)
 		app.Resource("/todoes", TodoesResource{})
+		app.GET("/todos/{user}", UserTodos)
 	}
 
 	return app
@@ -75,4 +78,32 @@ func forceSSL() buffalo.MiddlewareFunc {
 		SSLRedirect:     ENV == "production",
 		SSLProxyHeaders: map[string]string{"X-Forwarded-Proto": "https"},
 	})
+}
+
+// List gets all Todoes. This function is mapped to the path
+// GET /todoes
+func UserTodos(c buffalo.Context) error {
+  // Get the DB connection from the context
+  tx, ok := c.Value("tx").(*pop.Connection)
+  if !ok {
+    return fmt.Errorf("no transaction found")
+  }
+
+  todoes := &models.Todoes{}
+
+  // Paginate results. Params "page" and "per_page" control pagination.
+  // Default values are "page=1" and "per_page=20".
+  userQuery := "todoes.user = '" + string(c.Param("user"))+"'"
+  fmt.Println(userQuery)
+  q := tx.Where(userQuery)
+
+  // Retrieve all Todoes from the DB
+  if err := q.All(todoes); err != nil {
+    return err
+  }
+
+  // Add the paginator to the context so it can be used in the template.
+
+
+  return c.Render(200, r.JSON(todoes))
 }
