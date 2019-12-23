@@ -9,12 +9,13 @@ import (
 
 	"de/models"
 
+	"fmt"
+
 	"github.com/gobuffalo/buffalo-pop/pop/popmw"
 	contenttype "github.com/gobuffalo/mw-contenttype"
+	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/x/sessions"
 	"github.com/rs/cors"
-	"fmt"
-	"github.com/gobuffalo/pop"
 )
 
 // ENV is used to help switch settings based on where the
@@ -83,27 +84,26 @@ func forceSSL() buffalo.MiddlewareFunc {
 // List gets all Todoes. This function is mapped to the path
 // GET /todoes
 func UserTodos(c buffalo.Context) error {
-  // Get the DB connection from the context
-  tx, ok := c.Value("tx").(*pop.Connection)
-  if !ok {
-    return fmt.Errorf("no transaction found")
-  }
+	// Get the DB connection from the context
+	tx, ok := c.Value("tx").(*pop.Connection)
+	if !ok {
+		return fmt.Errorf("no transaction found")
+	}
 
-  todoes := &models.Todoes{}
+	todoes := &models.Todoes{}
 
-  // Paginate results. Params "page" and "per_page" control pagination.
-  // Default values are "page=1" and "per_page=20".
-  userQuery := "todoes.user = '" + string(c.Param("user"))+"'"
-  fmt.Println(userQuery)
-  q := tx.Where(userQuery)
+	// Paginate results. Params "page" and "per_page" control pagination.
+	// Default values are "page=1" and "per_page=20".
+	userQuery := "todoes.user = '" + string(c.Param("user")) + "'"
+	fmt.Println(userQuery)
+	q := tx.Where(userQuery)
 
-  // Retrieve all Todoes from the DB
-  if err := q.All(todoes); err != nil {
-    return err
-  }
+	// Retrieve all Todoes from the DB
+	if err := q.All(todoes); err != nil {
+		return err
+	}
 
-  // Add the paginator to the context so it can be used in the template.
+	// Add the paginator to the context so it can be used in the template.
 
-
-  return c.Render(200, r.JSON(todoes))
+	return c.Render(200, r.JSON(todoes))
 }

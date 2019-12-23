@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go v0.36.0 // indirect
 	github.com/cockroachdb/cockroach-go v0.0.0-20190925194419-606b3d062051 // indirect
 	github.com/gobuffalo/buffalo v0.15.3
+	github.com/gobuffalo/buffalo-heroku v1.0.9 // indirect
 	github.com/gobuffalo/buffalo-pop v1.23.1
 	github.com/gobuffalo/envy v1.8.1
 	github.com/gobuffalo/fizz v1.9.5 // indirect
