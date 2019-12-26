@@ -42,7 +42,13 @@ func App() *buffalo.App {
 			Env:          ENV,
 			SessionStore: sessions.Null{},
 			PreWares: []buffalo.PreWare{
-				cors.Default().Handler,
+				cors.New(cors.Options{
+				AllowedOrigins:   []string{"*"},
+				AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+				AllowedHeaders:   []string{"Content-Type", "Cookie"},
+				AllowCredentials: true,
+				Debug:            true,
+			}).Handler,
 			},
 			SessionName: "_de_session",
 		})
